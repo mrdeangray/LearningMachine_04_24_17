@@ -1,0 +1,44 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Question:</strong>
+  <%= @card.question %>
+</p>
+
+<p>
+  <strong>Answer:</strong>
+  <%= @card.answer %>
+</p>
+
+<p>
+  <strong>Media:</strong>
+  <%= @card.media %>
+</p>
+
+<p>
+  <strong>Comment:</strong>
+  <%= @card.comment %>
+</p>
+
+<p>
+  <strong>Rep:</strong>
+  <%= @card.rep %>
+</p>
+
+<p>
+  <strong>Level:</strong>
+  <%= @card.level %>
+</p>
+
+<p>
+  <strong>Category:</strong>
+  <%= @card.category %>
+</p>
+
+<p>
+  <strong>User:</strong>
+  <%= @card.user_id %>
+</p>
+
+<%= link_to 'Edit', edit_card_path(@card) %> |
+<%= link_to 'Back', cards_path %>
