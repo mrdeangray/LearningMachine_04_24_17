@@ -1,14 +1,36 @@
+<script type="text/javascript">
+$(document).ready(function(){
+  setTimeout(function(){
+    $('#flash').remove();
+  }, 2000);
+ })
+</script>
+
 <!DOCTYPE html>
 <html>
   <head>
-    <title>LearningMachine042417</title>
+    <title>Guitar - LearningMachine042417</title>
     <%= csrf_meta_tags %>
 
     <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
     <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
   </head>
-
+ 
   <body>
+
+  <div class='container-fluid'>
+    
+    
+    
+        <%=render 'layouts/navigation'%>
+        
+          <div id='flash'>
+            <% flash.each do |key, value| %>
+              <div class="alert alert-<%= key %>"><%= value %></div>
+            <% end %>
+          </div>
+        <%=render 'layouts/flash'%>
     <%= yield %>
+      </div>
   </body>
 </html>

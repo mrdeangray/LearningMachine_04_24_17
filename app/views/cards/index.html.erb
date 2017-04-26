@@ -1,10 +1,44 @@
-<p id="notice"><%= notice %></p>
+<script>$(document).on('click.bs.radio', '.btn-radio > .btn', function(e) {
+  $(this).siblings().removeClass('active');
+  $(this).addClass('active');
+});</script>
 
-<h1>Cards</h1>
+<!--<h1>Cards</h1>-->
+<br/><br/>
 
-<table>
+
+Today's Rep Count: <%=session[:todays_rep_count]%> <br/>
+<%= @my_array.join ' ' %> 
+
+<body>
+  <div class='buttons'>
+  <div class="btn-group btn-radio" >
+    <button type="button" class="btn btn-default">Easy</button>
+    <button type="button" class="btn btn-default">Medium</button>
+    <button type="button" class="btn btn-default">Hard</button>
+  </div>
+</div>
+<br/><br/>
+
+<div id='question'>
+  <strong > <%=Card.find(session[:current_id]).question %> </strong>
+</div>
+
+<br/><br/>
+<div class='buttons'>
+  <%=link_to "#{Card.find(session[:choiceA_id]).answer}", choiceA_selected_cards_path, class: 'btn btn-primary', method: :post%>
+  <%=link_to "#{Card.find(session[:choiceB_id]).answer}", choiceB_selected_cards_path, class: 'btn btn-primary', method: :post%>
+  <%=link_to "#{Card.find(session[:choiceC_id]).answer}", choiceC_selected_cards_path, class: 'btn btn-primary', method: :post%>
+  <%=link_to "#{Card.find(session[:choiceD_id]).answer}", choiceD_selected_cards_path, class: 'btn btn-primary', method: :post%>
+   </div>
+
+<br/>
+<%=link_to 'Sigue', choiceA_selected_cards_path, class: 'btn btn-success', method: :post%>
+
+<table class='table'>
   <thead>
     <tr>
+      <th>ID</th>
       <th>Question</th>
       <th>Answer</th>
       <th>Media</th>
@@ -20,6 +54,7 @@
   <tbody>
     <% @cards.each do |card| %>
       <tr>
+        <td><%= card.id %></td>
         <td><%= card.question %></td>
         <td><%= card.answer %></td>
         <td><%= card.media %></td>

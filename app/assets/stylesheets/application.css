@@ -13,3 +13,25 @@
  *= require_tree .
  *= require_self
  */
+/*#header h1{*/
+/*    margin:0px;*/
+/*}*/
+
+body{
+    margin:0;
+}
+
+#question{
+    font-size: 40px;
+    text-align: center;
+}
+.buttons{
+    text-align:center;
+    text-decoration: none;
+    color: white;
+    
+}
+
+a:visited{
+  color:white;
+}

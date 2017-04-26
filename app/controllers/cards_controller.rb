@@ -1,10 +1,95 @@
 class CardsController < ApplicationController
   before_action :set_card, only: [:show, :edit, :update, :destroy]
 
+
+def choiceA_selected
+  if session[:current_id] == session[:choiceA_id]
+   flash[:success] = "Correct!"
+    next_card()
+  else
+    flash[:danger] = "Inorrect!"
+   redirect_to cards_path
+  end
+end
+
+def choiceB_selected
+  if session[:current_id] == session[:choiceB_id]
+   flash[:success] = "Correct!"
+    next_card()
+  else
+    flash[:danger] = "Inorrect!"
+    redirect_to cards_path
+  end
+end
+
+def choiceC_selected
+  if session[:current_id] == session[:choiceC_id]
+   flash[:success] = "Correct!"
+    next_card()
+  else
+    flash[:danger] = "Inorrect!"
+    redirect_to cards_path
+  end
+end
+
+def choiceD_selected
+  if session[:current_id] == session[:choiceD_id]
+   flash[:success] = "Correct!"
+    next_card()
+  else
+    flash[:danger] = "Inorrect!"
+    redirect_to cards_path
+  end
+end
+
+def next_card
+  card = Card.find(session[:current_id] )
+  card.rep +=1
+  card.save
+  
+    if session[:current_id] < 5
+        session[:current_id] +=1
+    else
+        session[:current_id] =1
+    end
+    session[:todays_rep_count] +=1
+    
+    redirect_to cards_path
+end
   # GET /cards
   # GET /cards.json
   def index
+    session[:current_id] ||= 1
+    session[:choiceA_id] ||= 1
+    session[:choiceB_id] ||= 1
+    session[:choiceC_id] ||= 1
+    session[:choiceD_id] ||= 1
+    session[:todays_rep_count] ||=0
+    gen_rand_ids()
+ # generate 4 unique random numbers between 1 and 5 in an array
+       @my_array=(1..5).to_a.sample(4)
+       if !@my_array.include? session[:current_id].to_i
+         rand_index = 0 + rand(4) 
+          @my_array[rand_index ] = session[:current_id].to_i
+       end
+    session[:choiceA_id] = @my_array[0]
+    session[:choiceB_id] = @my_array[1]
+    session[:choiceC_id] = @my_array[2]
+    session[:choiceD_id] = @my_array[3]  
     @cards = Card.all
+  end
+  
+  def gen_rand_ids
+   
+    # my_array = Array.new(4) { rand(1...9) }
+    #if array contains current_id, do nothing
+    #else n=random number between 1 and 3
+    #replace the n element with current_id
+    #iterate through the array and assign each element to choiceA_id...
+    Array.new(4)
+    #generate 4 random numbers that rep where the answer will be placed
+
+    
   end
 
   # GET /cards/1
