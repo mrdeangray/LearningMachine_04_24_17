@@ -2,9 +2,39 @@ class CardsController < ApplicationController
   before_action :set_card, only: [:show, :edit, :update, :destroy]
 
 
+def choiceA
+  card = Card.find(session[:current_id] )
+  # card.level = params[:level]
+  card.save
+  redirect_to cards_path
+    
+end
+
+def change_level_to_easy
+  card = Card.find(session[:current_id] )
+  card.level = "Easy"
+  card.save
+  redirect_to cards_path
+end
+
+def change_level_to_medium
+  card = Card.find(session[:current_id] )
+  card.level = "Medium"
+  card.save
+  redirect_to cards_path
+end
+
+def change_level_to_hard
+  card = Card.find(session[:current_id] )
+  card.level = "Hard"
+  card.save
+  redirect_to cards_path
+end
+
+
 def choiceA_selected
   if session[:current_id] == session[:choiceA_id]
-   flash[:success] = "Correct!"
+  # flash[:success] = "Correct!"
     next_card()
   else
     flash[:danger] = "Inorrect!"
@@ -14,7 +44,7 @@ end
 
 def choiceB_selected
   if session[:current_id] == session[:choiceB_id]
-   flash[:success] = "Correct!"
+  # flash[:success] = "Correct!"
     next_card()
   else
     flash[:danger] = "Inorrect!"
@@ -24,7 +54,7 @@ end
 
 def choiceC_selected
   if session[:current_id] == session[:choiceC_id]
-   flash[:success] = "Correct!"
+  # flash[:success] = "Correct!"
     next_card()
   else
     flash[:danger] = "Inorrect!"
@@ -34,7 +64,7 @@ end
 
 def choiceD_selected
   if session[:current_id] == session[:choiceD_id]
-   flash[:success] = "Correct!"
+  # flash[:success] = "Correct!"
     next_card()
   else
     flash[:danger] = "Inorrect!"
@@ -42,20 +72,45 @@ def choiceD_selected
   end
 end
 
+# def next_card
+#   card = Card.find(session[:current_id] )
+#   card.rep +=1
+#   # session[:card_level] = params[:level]
+#   # card.level = session[:card_level]
+#   card.save
+  
+#     if session[:current_id] < 5
+#         session[:current_id] +=1
+#     else
+#         session[:current_id] =1
+#     end
+#     session[:todays_rep_count] +=1
+    
+#     redirect_to cards_path
+# end
 def next_card
   card = Card.find(session[:current_id] )
   card.rep +=1
+  # session[:card_level] = params[:level]
+  # card.level = session[:card_level]
   card.save
   
-    if session[:current_id] < 5
-        session[:current_id] +=1
+    if session[:todays_rep_count] %2
+      # @card = Card.all.where('level = "Hard"').order(:updated_at).first
+     # @card = Card.find(1)
+       @card = Card.all.where(:level => 'Hard').order(:updated_at).first
+      # @objectives = Objective.all.where('category ="Todo" ')
+        session[:current_id] = @card.id
     else
-        session[:current_id] =1
+        @card = Card.all.order(:updated_at).first
     end
     session[:todays_rep_count] +=1
-    
+ 
     redirect_to cards_path
 end
+
+
+
   # GET /cards
   # GET /cards.json
   def index
@@ -76,6 +131,10 @@ end
     session[:choiceB_id] = @my_array[1]
     session[:choiceC_id] = @my_array[2]
     session[:choiceD_id] = @my_array[3]  
+    
+     @card = Card.find(session[:current_id] )
+    # @card.level = session[:card_level]
+    # @card.save
     @cards = Card.all
   end
   

@@ -25,13 +25,24 @@ body{
     font-size: 40px;
     text-align: center;
 }
-.buttons{
+.level_buttons{
+    text-align:center;
+    text-decoration: none;
+    /*color: white;*/
+    
+}
+
+.choice_buttons{
     text-align:center;
     text-decoration: none;
     color: white;
     
 }
 
-a:visited{
-  color:white;
+/*a:visited{*/
+/*  color:white;*/
+/*}*/
+
+a, a:visited, a:hover, a:active {
+  color: inherit;
 }

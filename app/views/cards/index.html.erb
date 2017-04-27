@@ -1,31 +1,76 @@
-<script>$(document).on('click.bs.radio', '.btn-radio > .btn', function(e) {
-  $(this).siblings().removeClass('active');
-  $(this).addClass('active');
-});</script>
+<script>
+
+
+$(document).ready(function() {
+  // var level = '<%=escape_javascript @card.level %>';
+  // alert(level);
+   alert("Dean");
+  // if (level == "Easy")
+  // {
+  //   $('#easy').click();
+  // }
+  // else if (level == "Medium")
+  // {
+  //   $('#medium').click();
+  // }
+  //   else
+  // {
+  //   $('#hard').click();
+  // }
+});
+
+
+function changeCardLevel(s){
+  //alert(s);
+  // getElementById('debug').innerHTML =s;
+  level = s;
+  document.getElementById('debug').innerHTML = s;
+  <%=escape_javascript session[:card_level] %> = s;
+  document.getElementById('debug2').innerHTML = <%=escape_javascript session[:card_level] %>
+}
+</script>
 
 <!--<h1>Cards</h1>-->
-<br/><br/>
 
+<p id='debug'><%=@card.level%></p>
 
 Today's Rep Count: <%=session[:todays_rep_count]%> <br/>
 <%= @my_array.join ' ' %> 
 
 <body>
-  <div class='buttons'>
-  <div class="btn-group btn-radio" >
-    <button type="button" class="btn btn-default">Easy</button>
-    <button type="button" class="btn btn-default">Medium</button>
-    <button type="button" class="btn btn-default">Hard</button>
+  
+  <%if @card.level=="Easy"%>
+    <div class='Level_buttons'>
+  <%=link_to 'Easy',change_level_to_easy_cards_path(level: 'Easy'), method: :post, id:"easy", class:"btn btn-danger"   %>
+  <%=link_to 'Medium',change_level_to_medium_cards_path(level: 'Medium'), method: :post, id:"medium", class:"btn btn-default"  %>
+  <%=link_to 'Hard',change_level_to_hard_cards_path(level: 'Hard'), method: :post, id:"hard", class:"btn btn-default"  %>
   </div>
-</div>
+  <%elsif @card.level=="Medium"%>
+   <div class='Level_buttons'>
+  <%=link_to 'Easy',change_level_to_easy_cards_path(level: 'Easy'), method: :post, id:"easy", class:"btn btn-default"   %>
+  <%=link_to 'Medium',change_level_to_medium_cards_path(level: 'Medium'), method: :post, id:"medium", class:"btn btn-danger"  %>
+  <%=link_to 'Hard',change_level_to_hard_cards_path(level: 'Hard'), method: :post, id:"hard", class:"btn btn-default"  %>
+  </div>
+  <%else%>
+    <div class='Level_buttons'>
+  <%=link_to 'Easy',change_level_to_easy_cards_path(level: 'Easy'), method: :post, id:"easy", class:"btn btn-default"   %>
+  <%=link_to 'Medium',change_level_to_medium_cards_path(level: 'Medium'), method: :post, id:"medium", class:"btn btn-default"  %>
+  <%=link_to 'Hard',change_level_to_hard_cards_path(level: 'Hard'), method: :post, id:"hard", class:"btn btn-danger"   %>
+  </div>
+  <%end%>
+  <br/><br/>
+
+  
+
+
 <br/><br/>
 
 <div id='question'>
-  <strong > <%=Card.find(session[:current_id]).question %> </strong>
+  <strong > <%=@card.question %> </strong>
 </div>
 
 <br/><br/>
-<div class='buttons'>
+<div class='choice_buttons'>
   <%=link_to "#{Card.find(session[:choiceA_id]).answer}", choiceA_selected_cards_path, class: 'btn btn-primary', method: :post%>
   <%=link_to "#{Card.find(session[:choiceB_id]).answer}", choiceB_selected_cards_path, class: 'btn btn-primary', method: :post%>
   <%=link_to "#{Card.find(session[:choiceC_id]).answer}", choiceC_selected_cards_path, class: 'btn btn-primary', method: :post%>
@@ -47,6 +92,7 @@ Today's Rep Count: <%=session[:todays_rep_count]%> <br/>
       <th>Level</th>
       <th>Category</th>
       <th>User</th>
+      <th>Updated At</th>
       <th colspan="3"></th>
     </tr>
   </thead>
@@ -63,6 +109,7 @@ Today's Rep Count: <%=session[:todays_rep_count]%> <br/>
         <td><%= card.level %></td>
         <td><%= card.category %></td>
         <td><%= card.user_id %></td>
+        <td><%= card.updated_at.in_time_zone('Eastern Time (US & Canada)').strftime("%I:%M:%S:%p %m-%d-%y") %></td>
         <td><%= link_to 'Show', card %></td>
         <td><%= link_to 'Edit', edit_card_path(card) %></td>
         <td><%= link_to 'Destroy', card, method: :delete, data: { confirm: 'Are you sure?' } %></td>
