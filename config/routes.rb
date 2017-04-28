@@ -12,6 +12,8 @@ Rails.application.routes.draw do
       post :change_level_to_easy
       post :change_level_to_medium
       post :change_level_to_hard
+      
+      post:reset_rep
     end
   end
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html

@@ -72,6 +72,15 @@ def choiceD_selected
   end
 end
 
+def reset_rep
+  Card.all.each do |card|
+    card.rep = 0
+    card.save
+  end
+  session[:todays_rep_count] = 0
+  redirect_to cards_path
+end
+
 # def next_card
 #   card = Card.find(session[:current_id] )
 #   card.rep +=1
@@ -94,16 +103,14 @@ def next_card
   # session[:card_level] = params[:level]
   # card.level = session[:card_level]
   card.save
-  
-    if session[:todays_rep_count] %2
-      # @card = Card.all.where('level = "Hard"').order(:updated_at).first
-     # @card = Card.find(1)
+    if session[:todays_rep_count] % 5 ==0 #5, 10,9 12 15
+        @card = Card.all.where(:level => 'Medium').order(:updated_at).first
+    elsif session[:todays_rep_count] %2 == 0 #0,2,4
        @card = Card.all.where(:level => 'Hard').order(:updated_at).first
-      # @objectives = Objective.all.where('category ="Todo" ')
-        session[:current_id] = @card.id
-    else
-        @card = Card.all.order(:updated_at).first
+    else                                     #5 7 11 13 17
+        @card = Card.all.where(:level => 'Easy').order(:updated_at).first
     end
+    session[:current_id] = @card.id
     session[:todays_rep_count] +=1
  
     redirect_to cards_path
