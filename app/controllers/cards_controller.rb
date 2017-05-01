@@ -1,5 +1,9 @@
 class CardsController < ApplicationController
   before_action :set_card, only: [:show, :edit, :update, :destroy]
+  before_action :require_user
+  
+  before_action :require_same_user, only: [:edit, :delete]
+  # before_action :initialize
 
 
 def choiceA
@@ -75,6 +79,7 @@ end
 def reset_rep
   Card.all.each do |card|
     card.rep = 0
+    # card.user_id=2
     card.save
   end
   session[:todays_rep_count] = 0
@@ -97,18 +102,64 @@ end
     
 #     redirect_to cards_path
 # end
-def next_card
-  card = Card.find(session[:current_id] )
-  card.rep +=1
+
+def add_rep_to_history
+  # @h=History.create(date: Date.yesterday, reps: 10)
+  @h = History.all.where(:date => Date.today, :user_id => current_user.id.to_i).first
+  if !@h.nil?
+    @h.repCount +=1
+    @h.save
+  else
+    @h=History.create(date: Date.today, repCount: 1, :user_id => current_user.id.to_i)
+  end
+  # redirect_to histories_path
+end
+
+def increment_card_rep
+    card = Card.find(session[:current_id] )
+    card.rep +=1
+    card.save
+    add_rep_to_history
   # session[:card_level] = params[:level]
   # card.level = session[:card_level]
-  card.save
-    if session[:todays_rep_count] % 5 ==0 #5, 10,9 12 15
-        @card = Card.all.where(:level => 'Medium').order(:updated_at).first
+
+end
+
+def start_card
+   if session[:todays_rep_count] % 5 ==0 #5, 10,9 12 15
+        @card = Card.all.where("level = ? and user_id =? ", "Medium" , current_user.id).order(:updated_at).first
+# User.where("users.name = ? OR users.name = ?", request.requester, request.regional_sales_mgr)
+# User.where(["name = ? and email = ?", "Joe", "joe@example.com"])
+
     elsif session[:todays_rep_count] %2 == 0 #0,2,4
-       @card = Card.all.where(:level => 'Hard').order(:updated_at).first
+      # @card = Card.all.where(:level => 'Hard').order(:updated_at).first
+      @card = Card.all.where("level = ? and user_id =? ", "Hard" , current_user.id).order(:updated_at).first
+
     else                                     #5 7 11 13 17
-        @card = Card.all.where(:level => 'Easy').order(:updated_at).first
+    @card = Card.all.where("level = ? and user_id =? ", "Easy" , current_user.id).order(:updated_at).first
+
+        # @card = Card.all.where(:level => 'Easy').order(:updated_at).first
+    end
+    session[:current_id] = @card.id
+ 
+  
+end
+
+def next_card
+    increment_card_rep
+    if session[:todays_rep_count] % 5 ==0 #5, 10,9 12 15
+        @card = Card.all.where("level = ? and user_id =? ", "Medium" , current_user.id).order(:updated_at).first
+# User.where("users.name = ? OR users.name = ?", request.requester, request.regional_sales_mgr)
+# User.where(["name = ? and email = ?", "Joe", "joe@example.com"])
+
+    elsif session[:todays_rep_count] %2 == 0 #0,2,4
+      # @card = Card.all.where(:level => 'Hard').order(:updated_at).first
+      @card = Card.all.where("level = ? and user_id =? ", "Hard" , current_user.id).order(:updated_at).first
+
+    else                                     #5 7 11 13 17
+    @card = Card.all.where("level = ? and user_id =? ", "Easy" , current_user.id).order(:updated_at).first
+
+        # @card = Card.all.where(:level => 'Easy').order(:updated_at).first
     end
     session[:current_id] = @card.id
     session[:todays_rep_count] +=1
@@ -121,6 +172,11 @@ end
   # GET /cards
   # GET /cards.json
   def index
+    session[:todays_rep_count] ||= 0
+    start_card
+    
+    # @card = Card.all.where("level = ? and user_id =? ", "Hard" , current_user.id).order(:updated_at).first
+# session[:current_id] = @card.id
     session[:current_id] ||= 1
     session[:choiceA_id] ||= 1
     session[:choiceB_id] ||= 1
@@ -129,20 +185,22 @@ end
     session[:todays_rep_count] ||=0
     gen_rand_ids()
  # generate 4 unique random numbers between 1 and 5 in an array
-       @my_array=(1..5).to_a.sample(4)
-       if !@my_array.include? session[:current_id].to_i
-         rand_index = 0 + rand(4) 
-          @my_array[rand_index ] = session[:current_id].to_i
-       end
-    session[:choiceA_id] = @my_array[0]
-    session[:choiceB_id] = @my_array[1]
-    session[:choiceC_id] = @my_array[2]
-    session[:choiceD_id] = @my_array[3]  
+      # @my_array=(1..5).to_a.sample(4)
+      @my_array = Array.new
+       @my_array =Card.order("RANDOM()").limit(4).where(:user_id => current_user.id.to_i)
+      if !@my_array.include? session[:current_id].to_i
+        rand_index = 0 + rand(4) 
+          @my_array[rand_index ].id = session[:current_id].to_i
+      end
+    session[:choiceA_id] = @my_array[0].id
+    session[:choiceB_id] = @my_array[1].id
+    session[:choiceC_id] = @my_array[2].id
+    session[:choiceD_id] = @my_array[3].id 
     
-     @card = Card.find(session[:current_id] )
+    # @card = Card.find(session[:current_id] )
     # @card.level = session[:card_level]
     # @card.save
-    @cards = Card.all
+    @cards = Card.all.where(:user_id => current_user.id.to_i)
   end
   
   def gen_rand_ids
@@ -222,4 +280,24 @@ end
     def card_params
       params.require(:card).permit(:question, :answer, :media, :comment, :rep, :level, :category, :user_id)
     end
+    
+    
+    def require_user
+        if !user_signed_in?
+            flash[:danger]='you need to log in first'
+            redirect_to pages_welcome_path
+        end
+    end
+    
+    def require_same_user
+        if user_signed_in? and @card.user_id != current_user.id
+            flash[:danger]='you are not the same user'
+            redirect_to login_path
+        end
+    end
+    
+    # def initialize
+    #   session[:todays_rep_count] ||= 0
+    # end
+    
 end

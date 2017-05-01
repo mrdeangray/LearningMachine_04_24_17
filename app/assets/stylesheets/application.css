@@ -46,3 +46,7 @@ body{
 a, a:visited, a:hover, a:active {
   color: inherit;
 }
+
+.count{
+    font-size:40px;
+}

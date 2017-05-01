@@ -1,13 +1,26 @@
 
 
-<!--<h1>Cards</h1>-->
 
-<p id='debug'><%=@card.level%></p>
-
-Today's Rep Count: <%=session[:todays_rep_count]%> <br/>
-<!--<%= @my_array.join ' ' %> -->
 
 <body>
+  <%if @cards.count > 4%>
+
+<!--<h1>Cards</h1>-->
+
+<!--<p id='debug'><%=@card.level%></p>-->
+
+<strong>Today's Rep Count:  </strong><br/><br/>
+<strong><div class='count'><%=session[:todays_rep_count]%></div></strong>
+<!--<%= @my_array.join ' ' %> -->
+<!--<p>session[:current_id] <%=session[:current_id]%></p>-->
+<!--<p>session[:choiceA_id] <%=session[:choiceA_id]%> </p>-->
+<!--<p>session[:choiceB_id] <%=session[:choiceB_id]%> </p>-->
+<!--<p>session[:choiceC_id] <%=session[:choiceC_id]%> </p>-->
+<!--<p>session[:choiceD_id] <%=session[:choiceD_id]%> </p>-->
+
+
+
+
 
   <%if @card.level=="Easy"%>
     <div class='level_buttons'>
@@ -46,6 +59,7 @@ Today's Rep Count: <%=session[:todays_rep_count]%> <br/>
   <%=link_to "#{Card.find(session[:choiceC_id]).answer}", choiceC_selected_cards_path, class: 'btn btn-primary', method: :post%>
   <%=link_to "#{Card.find(session[:choiceD_id]).answer}", choiceD_selected_cards_path, class: 'btn btn-primary', method: :post%>
    </div>
+
 
 <br/>
 <%=link_to 'Reinico Reps', reset_rep_cards_path, class: 'btn btn-success', method: :post%>
@@ -89,5 +103,8 @@ Today's Rep Count: <%=session[:todays_rep_count]%> <br/>
 </table>
 
 <br>
-
+<%else%>
+</br>
+<div class='count'>You have <%=@cards.count%> cards. You need at least 4 cards in the database</div>
+<%end%>
 <%= link_to 'New Card', new_card_path %>
