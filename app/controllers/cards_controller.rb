@@ -16,6 +16,7 @@ end
 
 def change_level_to_easy
   card = Card.find(session[:current_id] )
+  card.record_timestamps = false
   card.level = "Easy"
   card.save
   redirect_to cards_path
@@ -23,6 +24,7 @@ end
 
 def change_level_to_medium
   card = Card.find(session[:current_id] )
+  card.record_timestamps = false
   card.level = "Medium"
   card.save
   redirect_to cards_path
@@ -30,6 +32,7 @@ end
 
 def change_level_to_hard
   card = Card.find(session[:current_id] )
+  card.record_timestamps = false
   card.level = "Hard"
   card.save
   redirect_to cards_path
@@ -126,7 +129,7 @@ def increment_card_rep
 end
 
 def start_card
-   if session[:todays_rep_count] % 5 ==0 #5, 10,9 12 15
+    if session[:todays_rep_count] % 5 ==0 #5, 10,9 12 15
         @card = Card.all.where("level = ? and user_id =? ", "Medium" , current_user.id).order(:updated_at).first
 # User.where("users.name = ? OR users.name = ?", request.requester, request.regional_sales_mgr)
 # User.where(["name = ? and email = ?", "Joe", "joe@example.com"])
@@ -139,6 +142,9 @@ def start_card
     @card = Card.all.where("level = ? and user_id =? ", "Easy" , current_user.id).order(:updated_at).first
 
         # @card = Card.all.where(:level => 'Easy').order(:updated_at).first
+    end
+    if @card.nil?
+      @card = Card.all.where(:user_id => current_user.id).order(:updated_at).first
     end
     session[:current_id] = @card.id
  
@@ -161,6 +167,9 @@ def next_card
 
         # @card = Card.all.where(:level => 'Easy').order(:updated_at).first
     end
+    if @card.nil?
+      @card = Card.all.where(:user_id => current_user.id).order(:updated_at).first
+    end
     session[:current_id] = @card.id
     session[:todays_rep_count] +=1
  
@@ -175,6 +184,12 @@ end
     session[:todays_rep_count] ||= 0
     start_card
     
+    @history = History.all.where(:user_id => current_user.id.to_i, :date => Date.today).first
+    if @history.nil?
+      @history.repCount =0
+      @history.save
+    end
+    
     # @card = Card.all.where("level = ? and user_id =? ", "Hard" , current_user.id).order(:updated_at).first
 # session[:current_id] = @card.id
     session[:current_id] ||= 1
@@ -186,12 +201,15 @@ end
     gen_rand_ids()
  # generate 4 unique random numbers between 1 and 5 in an array
       # @my_array=(1..5).to_a.sample(4)
-      @my_array = Array.new
-       @my_array =Card.order("RANDOM()").limit(4).where(:user_id => current_user.id.to_i)
-      if !@my_array.include? session[:current_id].to_i
-        rand_index = 0 + rand(4) 
+      # @my_array = Array.new
+      @my_array2 = Card.all.where(:user_id => current_user.id.to_i)
+       @my_array =Card.order("RANDOM()").limit(4).where(:user_id => current_user.id.to_i).where.not(:id => session[:current_id] )
+              rand_index = 0 + rand(4) 
           @my_array[rand_index ].id = session[:current_id].to_i
-      end
+      # if !@my_array.include? session[:current_id].to_i
+      #   rand_index = 0 + rand(4) 
+      #     @my_array[rand_index ].id = session[:current_id].to_i
+      # end
     session[:choiceA_id] = @my_array[0].id
     session[:choiceB_id] = @my_array[1].id
     session[:choiceC_id] = @my_array[2].id
