@@ -186,8 +186,10 @@ end
     
     @history = History.all.where(:user_id => current_user.id.to_i, :date => Date.today).first
     if @history.nil?
-      @history.repCount =0
-      @history.save
+      # @history=History.create(email: 'dean@gmail.com', encrypted_password: '123456')
+      @history=History.create(date: Date.today, repCount: 0)
+      # @history.repCount =0
+      # @history.save
     end
     
     # @card = Card.all.where("level = ? and user_id =? ", "Hard" , current_user.id).order(:updated_at).first
