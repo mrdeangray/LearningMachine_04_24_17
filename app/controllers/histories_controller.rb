@@ -4,12 +4,13 @@ class HistoriesController < ApplicationController
 
 def add_rep
   # @h=History.create(date: Date.yesterday, reps: 10)
-  @h = History.all.where(:date => Date.today).first
+  # @h = History.all.where(:date => Date.today).first
+  @h = History.all.where(:date => Time.zone.now.to_date).first
   if !@h.nil?
     @h.repCount +=1
     @h.save
   else
-    @h=History.create(date: Date.today, repCount: 1)
+    @h=History.create(date: Time.zone.now.to_date, repCount: 1) #instead of Date.today
   end
   # @h = History.find(1)
   # @h.date = 
