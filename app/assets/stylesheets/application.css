@@ -25,6 +25,10 @@ body{
     font-size: 40px;
     text-align: center;
     visibility: hidden;
+    height: 80px;
+    line-height: 80px;
+    /*border: 2px solid black;*/
+
 }
 .level_buttons{
     text-align:center;
@@ -50,4 +54,10 @@ a, a:visited, a:hover, a:active {
 
 .count{
     font-size:40px;
+}
+
+.questionDiv {
+    height: 200px;
+    width: 50%;
+    background-color: powderblue;
 }
