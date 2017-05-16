@@ -15,10 +15,18 @@ $(document).ready(function(){
     <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
     <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
   
-  <script type="text/javascript" async
-  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML">
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function () {
+       document.getElementById("question").style.visibility = "visible";
+    });
+ </script>
+</script>
+<script type="text/javascript"  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML">
 </script>
   
+  
+
   </head>
  
   <body>

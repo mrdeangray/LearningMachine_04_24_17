@@ -176,15 +176,27 @@ def next_card
     redirect_to cards_path
 end
 
+  def modifyAll
+     Card.all.each do |c|
+      if c.category==""
+        c.category='Vocab'
+        c.save
+      end
+      
+  end
+  end
 
 
   # GET /cards
   # GET /cards.json
   def index
+
     session[:todays_rep_count] ||= 0
     start_card
     
     @history = History.all.where(:user_id => current_user.id.to_i, :date => Date.today).first
+    # session[:todays_rep_count] ||= 0
+    
     if @history.nil?
       # @history=History.create(email: 'dean@gmail.com', encrypted_password: '123456')
       @history=History.create(date: Date.today, repCount: 0)
@@ -205,7 +217,10 @@ end
       # @my_array=(1..5).to_a.sample(4)
       # @my_array = Array.new
       @my_array2 = Card.all.where(:user_id => current_user.id.to_i)
-       @my_array =Card.order("RANDOM()").limit(4).where(:user_id => current_user.id.to_i).where.not(:id => session[:current_id] )
+      # @my_array =Card.order("RANDOM()").limit(4).where(:user_id => current_user.id.to_i).where.not(:id => session[:current_id] )
+       @my_array =Card.order("RANDOM()").limit(4).where(:user_id => current_user.id.to_i).where(:category => Card.find(session[:current_id]).category).where.not(:id => session[:current_id] )
+              
+              
               rand_index = 0 + rand(4) 
           @my_array[rand_index ].id = session[:current_id].to_i
       # if !@my_array.include? session[:current_id].to_i

@@ -24,6 +24,7 @@ body{
 #question{
     font-size: 40px;
     text-align: center;
+    visibility: hidden;
 }
 .level_buttons{
     text-align:center;

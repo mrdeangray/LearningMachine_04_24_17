@@ -1,4 +1,16 @@
+<span id="mykatex1">...</span>
+<script>
+var x = katex.render("f(a,b,c) = (a^2+b^2+c^2)^3", mykatex1);
+document.getElementById('Num').innerHTML ='dean';
+</script> 
 
+<p id="demo" onclick="myFunction()">Click me to change my HTML content (innerHTML).</p>
+
+<script>
+function myFunction() {
+    document.getElementById("demo").innerHTML = katex.renderToString("{a}\\over{b}");
+}
+</script>
 
 <body>
   <%if @cards.count > 4%>
