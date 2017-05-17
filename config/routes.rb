@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :objectives
   get 'pages/welcome'
 
   get 'pages/contact'

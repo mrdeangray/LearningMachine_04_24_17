@@ -1,0 +1,24 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Title:</strong>
+  <%= @objective.title %>
+</p>
+
+<p>
+  <strong>Completed at:</strong>
+  <%= @objective.completed_at %>
+</p>
+
+<p>
+  <strong>Category:</strong>
+  <%= @objective.category %>
+</p>
+
+<p>
+  <strong>User:</strong>
+  <%= @objective.user_id %>
+</p>
+
+<%= link_to 'Edit', edit_objective_path(@objective) %> |
+<%= link_to 'Back', objectives_path %>
