@@ -9,7 +9,8 @@ $(document).ready(function(){
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Rails - LearningMachine042417</title>
+    <!--<title>Rails - LearningMachine042417</title>-->
+    <title><%=(yield(:title) + " - " unless yield(:title).blank?).to_s + "Learning Machine"   %></title>
     <%= csrf_meta_tags %>
 
     <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
