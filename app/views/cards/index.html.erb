@@ -1,7 +1,13 @@
 <%=content_for :title, "Drill"%>
+<head>
+
+</head>
+
 
 <body>
-  <%if @cards.count > 4%>
+  
+  
+  <%if @cards.count > 5%>
 
 <!--<h1>Cards</h1>-->
 
@@ -10,6 +16,14 @@
 <strong>Today's Rep Count:  </strong><br/><br/>
 <!--<strong><div class='count'><%=session[:todays_rep_count]%></div></strong>-->
 <strong><div class='count'><%=@history.repCount%></div></strong>
+
+
+
+<strong>Points in a Row:  </strong><br/><br/>
+<%=session[:correct_in_a_row]%>
+
+
+
 <!--<%= @my_array.join ' ' %> -->
 <!--<p>session[:current_id] <%=session[:current_id]%></p>-->
 <!--<p>session[:choiceA_id] <%=session[:choiceA_id]%> </p>-->
@@ -109,3 +123,9 @@
 <div class='count'>You have <%=@cards.count%> cards. You need at least 4 cards in the database</div>
 <%end%>
 <%= link_to 'New Card', new_card_path %>
+
+
+
+</body>
+
+

@@ -3,6 +3,7 @@ class CardsController < ApplicationController
   before_action :require_user
   
   before_action :require_same_user, only: [:edit, :delete]
+
   # before_action :initialize
 
 
@@ -39,12 +40,23 @@ def change_level_to_hard
 end
 
 
+def wrong_answer
+  card = Card.find(session[:current_id] )
+  card.record_timestamps = false
+  card.level = "Hard"
+  card.save
+  session[:correct_in_a_row] = 0
+  # session[:todays_rep_count] -= 2
+end
+
+
 def choiceA_selected
   if session[:current_id] == session[:choiceA_id]
   # flash[:success] = "Correct!"
     next_card()
   else
     flash[:danger] = "Inorrect!"
+    wrong_answer
    redirect_to cards_path
   end
 end
@@ -55,6 +67,7 @@ def choiceB_selected
     next_card()
   else
     flash[:danger] = "Inorrect!"
+    wrong_answer
     redirect_to cards_path
   end
 end
@@ -65,6 +78,7 @@ def choiceC_selected
     next_card()
   else
     flash[:danger] = "Inorrect!"
+    wrong_answer
     redirect_to cards_path
   end
 end
@@ -75,6 +89,7 @@ def choiceD_selected
     next_card()
   else
     flash[:danger] = "Inorrect!"
+    wrong_answer
     redirect_to cards_path
   end
 end
@@ -123,6 +138,8 @@ def increment_card_rep
     card.rep +=1
     card.save
     add_rep_to_history
+    
+    session[:correct_in_a_row] +=1
   # session[:card_level] = params[:level]
   # card.level = session[:card_level]
 
@@ -146,6 +163,11 @@ def start_card
     if @card.nil?
       @card = Card.all.where(:user_id => current_user.id).order(:updated_at).first
     end
+    
+    
+      # @card = Card.all.where.not("category ='Math'").where(:user_id => current_user.id).order(:updated_at).first
+     
+    
     session[:current_id] = @card.id
  
   
@@ -153,6 +175,7 @@ end
 
 def next_card
     increment_card_rep
+    
     if session[:todays_rep_count] % 5 ==0 #5, 10,9 12 15
         @card = Card.all.where("level = ? and user_id =? ", "Medium" , current_user.id).order(:updated_at).first
 # User.where("users.name = ? OR users.name = ?", request.requester, request.regional_sales_mgr)
@@ -190,7 +213,7 @@ end
   # GET /cards
   # GET /cards.json
   def index
-
+    session[:correct_in_a_row] ||= 0
     session[:todays_rep_count] ||= 0
     start_card
     
@@ -235,7 +258,12 @@ end
     # @card = Card.find(session[:current_id] )
     # @card.level = session[:card_level]
     # @card.save
+    
+    
+    
     @cards = Card.all.where(:user_id => current_user.id.to_i)
+  # redirect_back(fallback_location: objectives_path)
+  
   end
   
   def gen_rand_ids
@@ -332,7 +360,8 @@ end
     end
     
     # def initialize
-    #   session[:todays_rep_count] ||= 0
+    #   # session[:todays_rep_count] ||= 0
+    #   session[:correct_in_a_row] ||= 0
     # end
     
 end

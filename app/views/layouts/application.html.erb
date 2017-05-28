@@ -1,14 +1,32 @@
-<script type="text/javascript">
-$(document).ready(function(){
-  setTimeout(function(){
-    $('#flash').remove();
-  }, 2000);
- })
-</script>
+
+
+
 
 <!DOCTYPE html>
 <html>
   <head>
+    
+
+
+</script>
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    showMathMenu: false
+  });
+</script>
+
+<script type="text/javascript"
+   src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML&delayStartupUntil=configured">
+</script>
+  
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function () {
+       document.getElementById("question").style.visibility = "visible";
+      // alert('Hello');
+    });
+ </script>
+    
+    
     <!--<title>Rails - LearningMachine042417</title>-->
     <title><%=(yield(:title) + " - " unless yield(:title).blank?).to_s + "Learning Machine"   %></title>
     <%= csrf_meta_tags %>
@@ -17,16 +35,9 @@ $(document).ready(function(){
     <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
   
 
-<script type="text/x-mathjax-config">
-    MathJax.Hub.Queue(function () {
-       document.getElementById("question").style.visibility = "visible";
-    });
- </script>
-</script>
-<script type="text/javascript"  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML">
-</script>
-  
-  
+
+
+
 
   </head>
  
@@ -47,4 +58,29 @@ $(document).ready(function(){
     <%= yield %>
       </div>
   </body>
+  
+  <script>
+      MathJax.Hub.Typeset();
+</script>
+  
+  
 </html>
+
+
+
+ 
+
+ <script>
+$(document).ready(function(){
+        // $("#question").fadeIn(3000).removeClass('hidden');
+        $("#question").fadeIn(2000);
+});
+</script>
+
+<footer>
+  <script type="text/javascript">
+  MathJax.Hub.Configured()
+</script>
+</footer>
+
+
