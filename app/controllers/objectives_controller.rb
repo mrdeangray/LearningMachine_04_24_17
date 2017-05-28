@@ -1,5 +1,8 @@
 class ObjectivesController < ApplicationController
   before_action :set_objective, only: [:show, :edit, :update, :destroy]
+  before_action :require_user
+  
+  before_action :require_same_user, only: [:edit, :delete]
 
   # GET /objectives
   # GET /objectives.json
@@ -71,4 +74,20 @@ class ObjectivesController < ApplicationController
     def objective_params
       params.require(:objective).permit(:title, :completed_at, :category, :user_id)
     end
+    
+    def require_user
+        if !user_signed_in?
+            flash[:danger]='you need to log in first'
+            redirect_to pages_welcome_path
+        end
+    end
+    
+    def require_same_user
+        if user_signed_in? and @card.user_id != current_user.id
+            flash[:danger]='you are not the same user'
+            redirect_to login_path
+        end
+    end
+    
+    
 end
