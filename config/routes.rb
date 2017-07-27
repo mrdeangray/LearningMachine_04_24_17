@@ -3,6 +3,8 @@ Rails.application.routes.draw do
   get 'pages/welcome'
 
   get 'pages/contact'
+  
+  get '/search/:search_term' => 'cards#search'
 
 
 
@@ -26,6 +28,9 @@ Rails.application.routes.draw do
       post :change_level_to_hard
       
       post:reset_rep
+      
+      post :list_all
+      
     end
   end
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html

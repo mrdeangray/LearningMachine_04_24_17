@@ -19,10 +19,33 @@
 
 body{
     margin:0;
+    /*background-color: #f4f2f2;*/
+    /*background-color: #e5e5e8;*/
+    
+    /*background: image-url('MixerNoSends.png');*/
+    /*background-image: url('MixerNoSends.png');*/
+    background-image: url('bg4.jpg');
+    /*/LearningMachine_04_24_17/app/assets/images/bg4.jpg*/
+    
+}
+
+/*hr {*/
+/*height: 1px;*/
+/*color: #123455;*/
+/*background-color: grey;*/
+/*border: none;*/
+/*}*/
+.well{
+    /*background-color: #efeff2;*/
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.btn{
+   box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.2), 0 2px 2px 0 rgba(0, 0, 0, 0.19);
 }
 
 #question{
-    font-size: 40px;
+    font-size: 30px;
     text-align: center;
     /*visibility: hidden;*/
     display:none;
@@ -54,7 +77,7 @@ a, a:visited, a:hover, a:active {
 }
 
 .count{
-    font-size:40px;
+    font-size:20px;
 }
 
 .questionDiv {
@@ -67,3 +90,24 @@ a, a:visited, a:hover, a:active {
     
 /*    font-family: Kumar One*/
 /*}*/
+
+/*.btn{*/
+/*    width: 60px;*/
+/*    height: 60px;*/
+/*    margin:0 auto;*/
+/*}*/
+
+/*.well{*/
+    /*width: 320px;*/
+/*    border: 1px solid green;*/
+/*}*/
+
+.answersDiv{
+    width: 320px;
+    text-align: center;
+}
+
+.italic_text{
+     font-style: italic;
+}
+

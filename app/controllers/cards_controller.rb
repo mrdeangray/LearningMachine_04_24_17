@@ -6,6 +6,64 @@ class CardsController < ApplicationController
 
   # before_action :initialize
 
+def list_all
+   session[:correct_in_a_row] ||= 0
+    session[:todays_rep_count] ||= 0
+    start_card
+    
+    @history = History.all.where(:user_id => current_user.id.to_i, :date => Date.today).first
+    # session[:todays_rep_count] ||= 0
+    
+    if @history.nil?
+      # @history=History.create(email: 'dean@gmail.com', encrypted_password: '123456')
+      @history=History.create(date: Date.today, repCount: 0)
+      # @history.repCount =0
+      # @history.save
+    end
+    
+    # @card = Card.all.where("level = ? and user_id =? ", "Hard" , current_user.id).order(:updated_at).first
+# session[:current_id] = @card.id
+    session[:current_id] ||= 1
+    session[:choiceA_id] ||= 1
+    session[:choiceB_id] ||= 1
+    session[:choiceC_id] ||= 1
+    session[:choiceD_id] ||= 1
+    session[:todays_rep_count] ||=0
+    gen_rand_ids()
+ # generate 4 unique random numbers between 1 and 5 in an array
+      # @my_array=(1..5).to_a.sample(4)
+      # @my_array = Array.new
+      @my_array2 = Card.all.where(:user_id => current_user.id.to_i)
+      # @my_array =Card.order("RANDOM()").limit(4).where(:user_id => current_user.id.to_i).where.not(:id => session[:current_id] )
+       @my_array =Card.order("RANDOM()").limit(4).where(:user_id => current_user.id.to_i).where(:category => Card.find(session[:current_id]).category).where.not(:id => session[:current_id] )
+              
+              
+              rand_index = 0 + rand(4) 
+          @my_array[rand_index ].id = session[:current_id].to_i
+      # if !@my_array.include? session[:current_id].to_i
+      #   rand_index = 0 + rand(4) 
+      #     @my_array[rand_index ].id = session[:current_id].to_i
+      # end
+    session[:choiceA_id] = @my_array[0].id
+    session[:choiceB_id] = @my_array[1].id
+    session[:choiceC_id] = @my_array[2].id
+    session[:choiceD_id] = @my_array[3].id 
+    
+    # @card = Card.find(session[:current_id] )
+    # @card.level = session[:card_level]
+    # @card.save
+    
+    
+    
+    @cards = Card.all.where(:user_id => current_user.id.to_i)
+  # redirect_back(fallback_location: objectives_path)
+  
+end
+
+def search 
+  # @result=params[:search_term1]
+   @result = Card.all.where(:question => params[:search_term1]).order(:updated_at).first
+end
 
 def choiceA
   card = Card.find(session[:current_id] )
