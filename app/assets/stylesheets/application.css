@@ -134,3 +134,8 @@ a, a:visited, a:hover, a:active {
      font-style: italic;
 }
 
+.score-board
+{
+    border: 1px solid black;
+}
+

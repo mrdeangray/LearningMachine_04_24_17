@@ -17,9 +17,11 @@
 <!--<strong>Today's Rep Count: <%=@history.repCount%> </strong>-->
 <!--<strong><div class='count'><%=session[:todays_rep_count]%></div></strong>-->
 <!--<strong><div class='count'><%=@history.repCount%></div></strong>-->
+<div class='score-board'>
  <%=link_to "Score: #{@history.repCount}", histories_path%>
-  
+</div>  
 
+<div style="font-family: 'Orbitron', sans-serif;"><%=link_to "Score: #{@history.repCount}", histories_path%></div>
 
 
 
