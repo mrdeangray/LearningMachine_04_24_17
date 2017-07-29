@@ -5,7 +5,9 @@
 
 
 <body>
-  
+  Date.today: <%=Date.today%><br/>
+Time.zone.now.to_date: <%=Time.zone.now.to_date%>
+ <!--<li><%=link_to "Today's Count: #{session[:correct_in_a_row]}", histories_path%></li>-->
   
   <%if @cards.count > 5%>
 

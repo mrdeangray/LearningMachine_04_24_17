@@ -10,9 +10,12 @@
         <span class="icon-bar"></span>
       </button>
       <!--<a class="navbar-brand" href="#" >LM</a>-->
-      <a class="navbar-brand" href="#">
+      <a class="navbar-brand" href=<%= root_path %>>
   
       <img src="<%= asset_path( 'LM3.png' ) %>" style="display: inline-block; height: 30px"/>
+      <!--<img src="<%= asset_path( 'LearningMachine.png' ) %>" style="display: inline-block; height: 30px"/>-->
+      
+      
       <span style="display: inline-block;"></span>
     </a>
       
@@ -30,10 +33,15 @@
 
         <li><%=link_to "Drill", cards_path%></li>
         <li><%=link_to "History", histories_path%></li>
+
+        
+    
+        
+         <%if !current_user.nil? && current_user.id==1%>
         <li><%=link_to "Objectives", objectives_path%></li>
         <li><%=link_to "List All", list_all_cards_path, method: :post%></li>
-        <!--<li><%=link_to "Today's Count: #{session[:correct_in_a_row]}", histories_path%></li>-->
        
+   <%end%>
         
         <li></li>
 
