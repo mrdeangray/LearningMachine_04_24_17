@@ -26,8 +26,15 @@ body{
     /*background-image: url('MixerNoSends.png');*/
     background-image: url('bg4.jpg');
     /*/LearningMachine_04_24_17/app/assets/images/bg4.jpg*/
+    font-family: 'Lobster', Sans-serif;
     
 }
+
+.score{
+    font-family: 'Orbitron', sans-serif;  
+    font-weight: 900;
+}
+
 
 /*hr {*/
 /*height: 1px;*/
