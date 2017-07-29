@@ -30,9 +30,12 @@ body{
     
 }
 
+
+
 .score{
     font-family: 'Orbitron', sans-serif;  
     font-weight: 900;
+    text-decoration: none;
 }
 
 
